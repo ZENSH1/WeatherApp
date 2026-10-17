@@ -20,15 +20,8 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 /**
- * The **M** in MVC: the app's weather state plus the business rules that change it.
- *
- * - The **View** observes [selectedCity] and [search] and redraws whenever they change
- *   (classic MVC "change notification", implemented with [StateFlow]).
- * - The **Controller** decides *when* to call [search], [selectCity], [refreshSelectedCity]…
- * - The Model never references either of them, so it can be unit tested on the JVM.
- *
- * It is a singleton that runs its work in [ApplicationScope]: rotating the screen recreates the
- * View and the Controller, but this state (and any request in flight) survives. No ViewModel needed.
+ * The **M** in MVC: weather state and the rules that change it. The View observes it, the
+ * Controller calls it, and it knows neither. App-scoped, so it survives rotation without a ViewModel.
  */
 @Singleton
 class WeatherModel @Inject constructor(
@@ -39,7 +32,7 @@ class WeatherModel @Inject constructor(
 
     private val refreshStatus = MutableStateFlow<RefreshStatus>(RefreshStatus.Idle)
 
-    /** The city the user picked, combined with the status of its latest refresh. */
+    /** The selected city plus the status of its latest refresh. */
     val selectedCity: StateFlow<SelectedCityState> =
         combine(repository.selectedCity, refreshStatus) { city, refresh ->
             if (city == null) {
@@ -55,14 +48,13 @@ class WeatherModel @Inject constructor(
 
     private val _search = MutableStateFlow<SearchState>(SearchState.Idle)
 
-    /** The current search session. */
     val search: StateFlow<SearchState> = _search.asStateFlow()
 
     private var searchJob: Job? = null
     private var selectJob: Job? = null
     private var refreshJob: Job? = null
 
-    /** Starts a search for [query]. Rule: only the latest search counts, an older one is abandoned. */
+    /** Only the latest search counts. */
     fun search(query: String) {
         searchJob?.cancel()
         _search.value = SearchState.Searching(query)
@@ -76,16 +68,12 @@ class WeatherModel @Inject constructor(
         }
     }
 
-    /** Ends the search session. */
     fun clearSearch() {
         searchJob?.cancel()
         _search.value = SearchState.Idle
     }
 
-    /**
-     * Saves [city] and makes it the selected one.
-     * Rules: picking a city ends the search session, and the latest pick wins.
-     */
+    /** Picking a city ends the search; the latest pick wins. */
     fun selectCity(city: CityWeather) {
         clearSearch()
         refreshJob?.cancel()
@@ -94,13 +82,12 @@ class WeatherModel @Inject constructor(
         selectJob = scope.launch { repository.select(city) }
     }
 
-    /** Downloads fresh weather for the selected city. Rule: one refresh at a time. */
+    /** One refresh at a time. */
     fun refreshSelectedCity() {
         if (refreshJob?.isActive == true) return
         refreshJob = scope.launch { refresh() }
     }
 
-    /** Like [refreshSelectedCity], but only when the saved reading is older than [STALE_AFTER_SECONDS]. */
     fun refreshSelectedCityIfStale() {
         if (refreshJob?.isActive == true) return
         refreshJob = scope.launch {
@@ -127,10 +114,8 @@ class WeatherModel @Inject constructor(
     }
 
     companion object {
-        /** Weather older than this is refreshed automatically when the screen starts. */
         const val STALE_AFTER_SECONDS = 30 * 60L
 
-        /** Keep observing the database for a few seconds after the View stops (e.g. rotation). */
         private const val STOP_TIMEOUT_MILLIS = 5_000L
     }
 }

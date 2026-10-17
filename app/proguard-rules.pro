@@ -1,6 +1,4 @@
-# R8 rules for the release build (isMinifyEnabled = true).
-# Retrofit, OkHttp, kotlinx.serialization, Room, Hilt and Coil ship their own consumer rules,
-# so only app-specific rules belong here.
+# Libraries ship their own R8 rules; only app-specific ones go here.
 
 # Keep line numbers in crash reports, but hide the original file names.
 -keepattributes SourceFile,LineNumberTable

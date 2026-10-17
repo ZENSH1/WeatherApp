@@ -14,18 +14,15 @@ class FakeWeatherRepository : WeatherRepository {
     val selected = MutableStateFlow<CityWeather?>(null)
     override val selectedCity: Flow<CityWeather?> = selected
 
-    /** Results returned by [search], keyed by query. */
     var searchResults: Map<String, List<CityWeather>> = emptyMap()
 
-    /** When non-null, [search] fails with this reason. */
     var searchFailure: FailureReason? = null
 
-    /** When non-null, [search] suspends until it is completed, so tests can observe in-flight state. */
+    /** Holds [search] open until completed. */
     var searchGate: CompletableDeferred<Unit>? = null
 
     val searchQueries = mutableListOf<String>()
 
-    /** What [refreshSelectedCity] stores as the new reading. Defaults to the current one. */
     var refreshedCity: CityWeather? = null
     var refreshFailure: FailureReason? = null
     var refreshGate: CompletableDeferred<Unit>? = null

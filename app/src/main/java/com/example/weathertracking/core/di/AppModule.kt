@@ -11,10 +11,7 @@ import kotlinx.coroutines.SupervisorJob
 import javax.inject.Qualifier
 import javax.inject.Singleton
 
-/**
- * A scope that lives as long as the app process. The MVC Model runs its work here so that
- * a search or refresh is not lost when the Activity is recreated (rotation, dark mode, …).
- */
+/** Lives as long as the process, so the Model's work survives Activity recreation. */
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class ApplicationScope
@@ -23,10 +20,7 @@ annotation class ApplicationScope
 @InstallIn(SingletonComponent::class)
 object AppModule {
 
-    /**
-     * Runs on the main thread so Model state is only ever mutated from one thread.
-     * That is safe because everything the Model calls (Room, DataStore, Retrofit) is main-safe.
-     */
+    // Main thread: Model state is only touched from one thread, and its dependencies are main-safe.
     @Provides
     @Singleton
     @ApplicationScope

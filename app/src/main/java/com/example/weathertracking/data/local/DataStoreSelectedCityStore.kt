@@ -12,13 +12,12 @@ import kotlinx.coroutines.flow.map
 import java.io.IOException
 import javax.inject.Inject
 
-/** [SelectedCityStore] backed by Preferences DataStore. */
 class DataStoreSelectedCityStore @Inject constructor(
     private val dataStore: DataStore<Preferences>,
 ) : SelectedCityStore {
 
     override val selectedCityId: Flow<Long?> = dataStore.data
-        // A read error (e.g. corrupted file) should not take the screen down: treat it as "nothing selected".
+        // Treat a read error as "nothing selected".
         .catch { error -> if (error is IOException) emit(emptyPreferences()) else throw error }
         .map { preferences -> preferences[SELECTED_CITY_ID] }
         .distinctUntilChanged()

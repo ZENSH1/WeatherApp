@@ -26,11 +26,8 @@ import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
 
-// Screenshot tests. Each @PreviewTest is rendered on the JVM and compared with its reference image
-// in src/screenshotTestMockDebug/reference (the README shows those images).
-//   ./gradlew :app:updateMockDebugScreenshotTest     record new reference images
-//   ./gradlew :app:validateMockDebugScreenshotTest   compare against them
-// Every screenshot is a state of the View: the Model's state goes in, pixels come out.
+// Screenshot tests; references in src/screenshotTestMockDebug (used by the README).
+// Record: ./gradlew :app:updateMockDebugScreenshotTest  Check: validateMockDebugScreenshotTest
 
 @PreviewTest
 @Preview(showSystemUi = true, device = Devices.PIXEL_7)
@@ -81,12 +78,12 @@ private fun WeatherScreenshot(
     search: SearchState = SearchState.Idle,
     query: String = "",
 ) {
-    // Reference images must not depend on the time zone or language of the machine rendering them.
+    // Same output on every machine.
     remember {
         TimeZone.setDefault(TimeZone.getTimeZone("UTC"))
         Locale.setDefault(Locale.US)
     }
-    // Weather icons are downloaded at runtime; screenshots draw a stand-in sun instead.
+    // Icons are downloaded at runtime; draw a stand-in.
     val previewHandler = remember { AsyncImagePreviewHandler { SunIcon } }
     CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
         WeatherTrackingTheme(dynamicColor = false) {
@@ -131,7 +128,6 @@ private val London = city(2, "London", "City of London, Greater London", "United
 private val LongBeach = city(3, "Long Beach", "California", "United States of America", 24.0)
 private val Londrina = city(4, "Londrina", "Parana", "Brazil", 27.5)
 
-/** A simple sun, drawn once. */
 private val SunIcon: Image by lazy {
     val size = 256
     val bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888)

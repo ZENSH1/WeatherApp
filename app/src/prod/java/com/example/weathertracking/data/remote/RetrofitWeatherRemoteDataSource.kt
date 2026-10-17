@@ -8,7 +8,6 @@ import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
 
-/** `prod` flavor: the real weatherapi.com backend. */
 class RetrofitWeatherRemoteDataSource @Inject constructor(
     private val api: WeatherApi,
 ) : WeatherRemoteDataSource {
@@ -21,7 +20,6 @@ class RetrofitWeatherRemoteDataSource @Inject constructor(
         api.current("id:$locationId").toModel(locationId)
     }
 
-    /** Translates transport and HTTP errors into the one exception type the app understands. */
     private suspend fun <T> call(block: suspend () -> T): T = try {
         block()
     } catch (e: IOException) {
@@ -42,7 +40,7 @@ private fun NetworkCurrentResponse.toModel(locationId: Long) = CityWeather(
     temperatureCelsius = current.temperatureCelsius,
     feelsLikeCelsius = current.feelsLikeCelsius,
     condition = current.condition.text,
-    // Ask the CDN for the larger icon and make the URL absolute.
+    // Larger icon, absolute URL.
     iconUrl = current.condition.icon
         .replace("64x64", "128x128")
         .let { if (it.startsWith("//")) "https:$it" else it },

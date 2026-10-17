@@ -12,7 +12,7 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
-/** Runs the DAO against the real SQLite engine on a device, using an in-memory database. */
+/** In-memory database on a real device. */
 @RunWith(AndroidJUnit4::class)
 class CityWeatherDaoTest {
 

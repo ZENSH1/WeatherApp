@@ -2,7 +2,7 @@ package com.example.weathertracking.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-// "Sky" palette used when dynamic color is unavailable (Android 11 and lower) or disabled.
+// Used when dynamic color is off or unavailable.
 internal val SkyPrimaryLight = Color(0xFF00658F)
 internal val SkyOnPrimaryLight = Color(0xFFFFFFFF)
 internal val SkyPrimaryContainerLight = Color(0xFFC7E7FF)

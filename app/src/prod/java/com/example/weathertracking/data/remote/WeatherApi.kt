@@ -12,13 +12,13 @@ import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-/** Retrofit definition of the weatherapi.com endpoints the app uses. The API key is added by an interceptor. */
+/** weatherapi.com endpoints. The key is added by [ApiKeyInterceptor]. */
 interface WeatherApi {
 
     @GET("search.json")
     suspend fun search(@Query("q") query: String): List<NetworkLocation>
 
-    /** [query] can be a city name or `id:<location id>` from [search]. */
+    /** [query]: a city name or `id:<location id>`. */
     @GET("current.json")
     suspend fun current(@Query("q") query: String): NetworkCurrentResponse
 
@@ -40,7 +40,6 @@ interface WeatherApi {
     }
 }
 
-/** Adds the API key to every request so call sites never deal with it. */
 class ApiKeyInterceptor(private val apiKey: String) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
@@ -83,6 +82,6 @@ data class NetworkCurrent(
 @Serializable
 data class NetworkCondition(
     val text: String,
-    /** Protocol-relative URL such as `//cdn.weatherapi.com/weather/64x64/day/116.png`. */
+    /** Protocol-relative, e.g. `//cdn.weatherapi.com/weather/64x64/day/116.png`. */
     val icon: String,
 )

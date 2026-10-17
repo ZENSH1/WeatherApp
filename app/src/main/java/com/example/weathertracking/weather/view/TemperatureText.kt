@@ -35,7 +35,6 @@ internal fun TemperatureText(
     )
 }
 
-/** User-facing explanation for a [FailureReason]. */
 @StringRes
 internal fun FailureReason.messageRes(): Int = when (this) {
     FailureReason.Network -> R.string.error_network

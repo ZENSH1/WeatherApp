@@ -5,7 +5,6 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.weathertracking.data.model.CityWeather
 
-/** Room row for a city the user has selected. Keyed by the weather service's location id. */
 @Entity(tableName = "city_weather")
 data class CityWeatherEntity(
     @PrimaryKey val id: Long,

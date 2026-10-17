@@ -11,7 +11,7 @@ import org.junit.Assert.fail
 import org.junit.Before
 import org.junit.Test
 
-/** Checks the weatherapi.com JSON mapping and error translation against a local fake server. */
+/** JSON mapping and error translation against MockWebServer. */
 class RetrofitWeatherRemoteDataSourceTest {
 
     private val server = MockWebServer()

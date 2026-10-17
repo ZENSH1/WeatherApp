@@ -11,7 +11,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
-/** `prod` flavor: the Model talks to weatherapi.com. */
+/** `prod` flavor: weatherapi.com. */
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class RemoteModule {

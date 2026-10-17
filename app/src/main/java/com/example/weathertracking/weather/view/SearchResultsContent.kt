@@ -62,7 +62,6 @@ internal fun SearchResultsContent(
 
         is SearchState.Results -> LazyColumn(
             modifier = modifier,
-            // Insets go into contentPadding (not a parent padding) so the list scrolls edge to edge.
             contentPadding = contentPadding,
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {

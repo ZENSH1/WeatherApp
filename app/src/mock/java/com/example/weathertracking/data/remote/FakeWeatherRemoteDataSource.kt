@@ -8,12 +8,7 @@ import kotlinx.coroutines.delay
 import javax.inject.Inject
 import javax.inject.Singleton
 
-/**
- * The mock backend: canned cities with plausible weather and a little network latency.
- *
- * Readings drift by a couple of degrees every ten minutes so "refresh" visibly changes something.
- * Searching for "offline" simulates a network failure so the error UI can be tried out.
- */
+/** Canned cities with simulated latency. Readings drift every 10 minutes; searching "offline" fails. */
 @Singleton
 class FakeWeatherRemoteDataSource @Inject constructor(
     private val timeSource: TimeSource,
@@ -38,7 +33,6 @@ class FakeWeatherRemoteDataSource @Inject constructor(
         val city = CITIES.firstOrNull { it.id == locationId }
             ?: throw WeatherDataException(FailureReason.Unknown)
         val now = timeSource.nowEpochSeconds()
-        // Changes every 10 minutes, differently for every city.
         val drift = ((now / 600 + city.id) % 5 - 2).toInt()
         return CityWeather(
             id = city.id,
@@ -51,7 +45,6 @@ class FakeWeatherRemoteDataSource @Inject constructor(
             iconUrl = "https://cdn.weatherapi.com/weather/128x128/day/${city.iconCode}.png",
             humidityPercent = (city.humidityPercent + drift * 3).coerceIn(0, 100),
             uvIndex = city.uvIndex,
-            // The real API reports readings in 15-minute steps.
             lastUpdatedEpochSeconds = now - now % 900,
         )
     }

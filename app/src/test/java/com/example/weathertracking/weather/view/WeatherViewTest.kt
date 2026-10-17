@@ -24,10 +24,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
-/**
- * The View is a function of the Model's state, so it can be tested by feeding it states and
- * checking which callbacks (Controller methods, in the app) it fires. Runs on the JVM via Robolectric.
- */
+/** Feeds the View states and checks which callbacks it fires. Robolectric. */
 @RunWith(AndroidJUnit4::class)
 class WeatherViewTest {
 
@@ -70,7 +67,7 @@ class WeatherViewTest {
         setView(selectedCity = SelectedCityState.Selected(cityWeather(1, name = "Lahore")))
 
         composeRule.onNodeWithText("Lahore").assertIsDisplayed()
-        // The details are below the fold on a small screen: the content scrolls.
+        // Below the fold on a small screen.
         composeRule.onNodeWithText(string(R.string.humidity)).performScrollTo().assertIsDisplayed()
     }
 

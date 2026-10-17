@@ -38,7 +38,7 @@ abstract class DataModule {
         @Singleton
         fun provideDatabase(@ApplicationContext context: Context): WeatherDatabase =
             Room.databaseBuilder(context, WeatherDatabase::class.java, WeatherDatabase.NAME)
-                // The table is only a cache of downloaded weather, so it is safe to rebuild it.
+                // Only a cache of downloaded weather.
                 .fallbackToDestructiveMigration(dropAllTables = true)
                 .build()
 

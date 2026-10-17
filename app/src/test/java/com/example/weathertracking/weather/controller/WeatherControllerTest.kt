@@ -14,11 +14,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
-/**
- * The Controller is tested against a real [WeatherModel] (it is cheap and has no Android code);
- * only the repository underneath is fake. Assertions look at what the Model ended up doing.
- * The Model runs in `backgroundScope`, so `runCurrent()` is used to let its work finish.
- */
+/** Uses a real [WeatherModel] over a fake repository and checks what the Model did. */
 @OptIn(ExperimentalCoroutinesApi::class)
 class WeatherControllerTest {
 

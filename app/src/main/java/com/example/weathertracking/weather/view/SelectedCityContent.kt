@@ -37,7 +37,6 @@ import com.example.weathertracking.weather.model.SelectedCityState
 import java.util.Date
 import kotlin.math.roundToInt
 
-/** Renders [SelectedCityState]: a spinner, an empty state, or the selected city's weather. */
 @Composable
 internal fun SelectedCityContent(
     state: SelectedCityState,
@@ -189,7 +188,7 @@ private fun WeatherStat(label: String, value: String, modifier: Modifier = Modif
     }
 }
 
-/** Formats a timestamp with the user's 12/24-hour preference, e.g. "14:30" or "2:30 PM". */
+/** Uses the user's 12/24-hour setting. */
 @Composable
 private fun formatTime(epochSeconds: Long): String {
     val context = LocalContext.current

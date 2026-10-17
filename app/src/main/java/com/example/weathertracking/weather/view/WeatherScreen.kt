@@ -37,25 +37,17 @@ import com.example.weathertracking.weather.model.SearchState
 import com.example.weathertracking.weather.model.SelectedCityState
 import com.example.weathertracking.weather.model.WeatherModel
 
-/**
- * The **V** in MVC, wired to its Model and Controller.
- *
- *  - Model → View: the View *observes* the Model's state and redraws when it changes.
- *  - View → Controller: every user gesture is handed to the Controller, untouched.
- *
- * Note what is *not* here: no ViewModel, no business logic, no calls that change the Model.
- */
+/** The **V** in MVC: observes the Model and hands every gesture to the Controller. No logic. */
 @Composable
 fun WeatherScreen(
     model: WeatherModel,
     controller: WeatherController,
     modifier: Modifier = Modifier,
 ) {
-    // Lifecycle-aware observation: stops collecting while the app is in the background.
     val selectedCity by model.selectedCity.collectAsStateWithLifecycle()
     val search by model.search.collectAsStateWithLifecycle()
 
-    // "The screen became visible" is input too, so it goes to the Controller.
+    // Becoming visible is input too.
     LifecycleStartEffect(controller) {
         controller.onScreenStarted()
         onStopOrDispose { }
@@ -73,12 +65,7 @@ fun WeatherScreen(
     )
 }
 
-/**
- * The stateless part of the View: draws whatever it is given and reports gestures through lambdas.
- * Keeping it free of the Model/Controller types makes it previewable and easy to UI-test.
- *
- * @param initialQuery text the search field starts with (previews and screenshots use it).
- */
+/** Stateless View: draws what it is given and reports gestures. [initialQuery] is for previews. */
 @Composable
 fun WeatherView(
     selectedCity: SelectedCityState,
@@ -91,13 +78,13 @@ fun WeatherView(
     modifier: Modifier = Modifier,
     initialQuery: String = "",
 ) {
-    // The text being typed is the View's own state; the Controller only sees it once it is submitted.
+    // Typed text is View state; the Controller only sees it on submit.
     var query by rememberSaveable { mutableStateOf(initialQuery) }
     val keyboardController = LocalSoftwareKeyboardController.current
 
     Scaffold(
         modifier = modifier,
-        // safeDrawing includes the IME, so content is never hidden behind the keyboard.
+        // Includes the keyboard.
         contentWindowInsets = WindowInsets.safeDrawing,
         topBar = {
             Surface(color = MaterialTheme.colorScheme.surface) {

@@ -7,7 +7,7 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 
-/** `mock` flavor: the Model talks to canned data. Swap the flavor, not the code. */
+/** `mock` flavor: canned data. */
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class RemoteModule {

@@ -11,17 +11,12 @@ import com.example.weathertracking.weather.view.WeatherScreen
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
-/**
- * The composition root of the MVC triad: it gets the Model and the Controller from Hilt and
- * hands both to the View.
- */
+/** Wires the MVC triad: Model and Controller from Hilt, handed to the View. */
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    /** M: app-wide singleton, so its state survives this Activity being recreated. */
     @Inject lateinit var model: WeatherModel
 
-    /** C: stateless, a fresh instance per Activity is fine. */
     @Inject lateinit var controller: WeatherController
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,7 +24,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             WeatherTrackingTheme {
-                // V: renders the Model and forwards input to the Controller.
                 WeatherScreen(model = model, controller = controller)
             }
         }

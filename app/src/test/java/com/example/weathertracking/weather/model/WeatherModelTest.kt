@@ -15,13 +15,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-/**
- * The Model holds the business rules, so it gets the most tests. No Android, no UI:
- * just a fake repository and a test coroutine scope.
- *
- * The Model's "application scope" is the test's `backgroundScope`. Work launched there is run by
- * `runCurrent()` (`advanceUntilIdle()` intentionally ignores background work).
- */
+/** The Model runs in `backgroundScope`, so `runCurrent()` (not `advanceUntilIdle()`) runs its work. */
 @OptIn(ExperimentalCoroutinesApi::class)
 class WeatherModelTest {
 
@@ -34,7 +28,7 @@ class WeatherModelTest {
         scope = backgroundScope,
     )
 
-    /** `selectedCity` uses WhileSubscribed, so keep a subscriber alive to read its latest value. */
+    /** `selectedCity` is WhileSubscribed: keep a subscriber to read its value. */
     private fun TestScope.observeSelectedCity(model: WeatherModel) {
         backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) { model.selectedCity.collect {} }
     }

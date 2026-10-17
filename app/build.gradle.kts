@@ -11,9 +11,7 @@ plugins {
     alias(libs.plugins.screenshot)
 }
 
-// The weatherapi.com key is read from local.properties (git-ignored, never commit it):
-//     WEATHER_API_KEY=your_key
-// It is only used by the `prod` flavor. The `mock` flavor works without it.
+// prod flavor only: WEATHER_API_KEY=your_key in local.properties (git-ignored).
 val localProperties = Properties().apply {
     providers.fileContents(rootProject.layout.projectDirectory.file("local.properties"))
         .asText.orNull
@@ -37,9 +35,7 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    // Two backends behind the same Model. Pick one with the "Build Variants" panel.
-    //  - mock: canned, offline data (default). Great for learning and for UI work.
-    //  - prod: the real weatherapi.com API (needs WEATHER_API_KEY).
+    // mock: canned offline data (default). prod: weatherapi.com.
     flavorDimensions += "backend"
     productFlavors {
         create("mock") {
@@ -73,11 +69,10 @@ android {
     }
 
     testOptions {
-        // Lets Robolectric-backed Compose UI tests in src/test read app resources.
+        // For Robolectric.
         unitTests.isIncludeAndroidResources = true
     }
 
-    // Screenshot tests: previews in src/screenshotTest, rendered on the JVM (see README).
     experimentalProperties["android.experimental.enableScreenshotTest"] = true
 }
 
@@ -91,7 +86,7 @@ androidComponents {
 }
 
 room {
-    // Exported schemas are the input for future Room migrations; commit them.
+    // Needed for future migrations.
     schemaDirectory("$projectDir/schemas")
 }
 
@@ -115,25 +110,25 @@ dependencies {
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
 
-    // Local persistence (part of the Model)
+    // Local persistence
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.datastore.preferences)
 
-    // Images (weather condition icons)
+    // Images
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
 
     implementation(libs.timber)
 
-    // Real network backend, only compiled into the `prod` flavor.
+    // prod flavor: network backend
     "prodImplementation"(libs.retrofit)
     "prodImplementation"(libs.retrofit.kotlinx.serialization)
     "prodImplementation"(libs.okhttp)
     "prodImplementation"(libs.kotlinx.serialization.json)
 
-    // Local (JVM) tests: Model, Controller, Repository and Robolectric-backed View tests.
+    // JVM tests
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.turbine)
@@ -143,13 +138,13 @@ dependencies {
     testImplementation(platform(libs.androidx.compose.bom))
     testImplementation(libs.androidx.compose.ui.test.junit4)
 
-    // Screenshot tests (Compose Preview Screenshot Testing)
+    // Screenshot tests
     screenshotTestImplementation(libs.screenshot.validation.api)
     screenshotTestImplementation(libs.androidx.compose.ui.tooling)
-    // prod-only unit tests: the Retrofit data source against a local fake HTTP server.
+    // prod flavor JVM tests
     "testProdImplementation"(libs.okhttp.mockwebserver)
 
-    // Instrumented tests: Room DAO against a real SQLite engine.
+    // Instrumented tests
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.androidx.test.runner)
     androidTestImplementation(libs.kotlinx.coroutines.test)
