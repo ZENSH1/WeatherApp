@@ -29,7 +29,7 @@ android {
     defaultConfig {
         applicationId = "com.example.weathertracking"
         minSdk = 24
-        targetSdk = 36
+        targetSdk = 37
         versionCode = 2
         versionName = "2.0"
 

@@ -142,7 +142,7 @@ Then select **prodDebug** in Android Studio's *Build Variants* panel. The key is
 
 ## 5. Build, run, test
 
-Requirements: a recent Android Studio with AGP 9.3 support, JDK 17+, Android SDK 37.
+Requirements: an Android Studio version that supports AGP 9.4, JDK 17+, Android SDK 37.
 
 ```bash
 ./gradlew :app:installMockDebug            # run with the offline backend
@@ -156,8 +156,8 @@ Requirements: a recent Android Studio with AGP 9.3 support, JDK 17+, Android SDK
 Following the official [Android skills](https://github.com/android/skills) and Google's
 architecture guidance:
 
-- **Build** (`agp-9-upgrade`): AGP 9.3 with built-in Kotlin (no `kotlin-android` plugin), Gradle
-  9.5, a version catalog, KSP instead of kapt, BuildConfig fields through the variant API,
+- **Build** (`agp-9-upgrade`): AGP 9.4 with built-in Kotlin (no `kotlin-android` plugin), Gradle
+  9.8, a version catalog, KSP instead of kapt, BuildConfig fields through the variant API,
   configuration cache, and R8 with resource shrinking for release.
 - **Edge-to-edge** (`edge-to-edge`): `enableEdgeToEdge()`, `adjustResize`, and a `Scaffold`
   using `WindowInsets.safeDrawing` so the IME never covers content. List insets go into

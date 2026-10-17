@@ -1,16 +1,16 @@
 [versions]
 # Build tooling. AGP, Kotlin, KSP and Hilt move together: AGP 9 compiles Kotlin itself
 # ("built-in Kotlin"), so there is no org.jetbrains.kotlin.android plugin any more.
-agp = "9.3.3"
-kotlin = "2.4.20"
+agp = "9.4.1"
+kotlin = "2.4.21"
 ksp = "2.3.12"
 hilt = "2.60.1"
 
 # AndroidX
 activityCompose = "1.13.0"
 composeBom = "2026.09.00"
-coreKtx = "1.19.0"
-datastore = "1.2.0"
+coreKtx = "1.19.1"
+datastore = "1.2.1"
 lifecycle = "2.11.0"
 room = "2.8.5"
 

@@ -4,10 +4,11 @@ import androidx.activity.ComponentActivity
 import androidx.annotation.StringRes
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasSetTextAction
-import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.weathertracking.R
@@ -69,7 +70,8 @@ class WeatherViewTest {
         setView(selectedCity = SelectedCityState.Selected(cityWeather(1, name = "Lahore")))
 
         composeRule.onNodeWithText("Lahore").assertIsDisplayed()
-        composeRule.onNodeWithText(string(R.string.humidity)).assertIsDisplayed()
+        // The details are below the fold on a small screen: the content scrolls.
+        composeRule.onNodeWithText(string(R.string.humidity)).performScrollTo().assertIsDisplayed()
     }
 
     @Test
