@@ -76,6 +76,8 @@ fun WeatherScreen(
 /**
  * The stateless part of the View: draws whatever it is given and reports gestures through lambdas.
  * Keeping it free of the Model/Controller types makes it previewable and easy to UI-test.
+ *
+ * @param initialQuery text the search field starts with (previews and screenshots use it).
  */
 @Composable
 fun WeatherView(
@@ -87,9 +89,10 @@ fun WeatherView(
     onRetrySearch: () -> Unit,
     onRefresh: () -> Unit,
     modifier: Modifier = Modifier,
+    initialQuery: String = "",
 ) {
     // The text being typed is the View's own state; the Controller only sees it once it is submitted.
-    var query by rememberSaveable { mutableStateOf("") }
+    var query by rememberSaveable { mutableStateOf(initialQuery) }
     val keyboardController = LocalSoftwareKeyboardController.current
 
     Scaffold(

@@ -7,6 +7,16 @@ This project shows **Model–View–Controller (MVC)** done properly in a modern
 [News-App](https://github.com/ZENSH1/News-App), implements the same ideas with **MVI**, so you
 can compare the two side by side.
 
+## Screenshots
+
+| Selected city | Searching | Nothing selected yet | Offline | Dark theme |
+|---|---|---|---|---|
+| <img src="app/src/screenshotTestMockDebug/reference/com/example/weathertracking/weather/view/WeatherScreenshotsKt/SelectedCityScreenshot_light_d20f7286_0.png" width="160" alt="Selected city"> | <img src="app/src/screenshotTestMockDebug/reference/com/example/weathertracking/weather/view/WeatherScreenshotsKt/SearchResultsScreenshot_7522b1b0_0.png" width="160" alt="Searching"> | <img src="app/src/screenshotTestMockDebug/reference/com/example/weathertracking/weather/view/WeatherScreenshotsKt/NoCitySelectedScreenshot_7522b1b0_0.png" width="160" alt="Nothing selected yet"> | <img src="app/src/screenshotTestMockDebug/reference/com/example/weathertracking/weather/view/WeatherScreenshotsKt/SearchFailedScreenshot_7522b1b0_0.png" width="160" alt="Offline"> | <img src="app/src/screenshotTestMockDebug/reference/com/example/weathertracking/weather/view/WeatherScreenshotsKt/SelectedCityScreenshot_dark_286233ab_0.png" width="160" alt="Dark theme"> |
+
+These are the reference images of the [screenshot tests](app/src/screenshotTest), so they are
+rendered from the code, not captured by hand. The weather icon, which the app downloads at
+runtime, is drawn as a stand-in sun.
+
 ---
 
 ## 1. What is MVC?
@@ -117,6 +127,8 @@ app/src/
 ├── mock/                          offline backend: FakeWeatherRemoteDataSource + its Hilt binding
 ├── prod/                          weatherapi.com backend: Retrofit + kotlinx.serialization
 ├── test/                          JVM tests: Model, Controller, Repository, Robolectric View tests
+├── screenshotTest/                screenshot tests (Compose previews rendered on the JVM)
+├── screenshotTestMockDebug/       their reference images, also used in this README
 ├── testProd/                      Retrofit data source vs. MockWebServer
 └── androidTest/                   Room DAO against real SQLite
 ```
@@ -149,7 +161,13 @@ Requirements: an Android Studio version that supports AGP 9.4, JDK 17+, Android 
 ./gradlew :app:testMockDebugUnitTest       # Model, Controller, Repository, View (Robolectric)
 ./gradlew :app:testProdDebugUnitTest       # same + Retrofit data source vs MockWebServer
 ./gradlew :app:connectedMockDebugAndroidTest  # Room DAO on a device/emulator
+./gradlew :app:validateMockDebugScreenshotTest  # compare the UI with the reference screenshots
+./gradlew :app:updateMockDebugScreenshotTest    # re-record them after an intended UI change
 ```
+
+Screenshot tests use Google's Compose Preview Screenshot Testing tool through its standalone
+`com.android.compose.screenshot` plugin. That setup is deprecated in favour of AGP test suites,
+which need AGP 9.5.0-alpha03 or newer; this project stays on stable AGP 9.4 for now.
 
 ## 6. Android best practices applied
 
@@ -166,8 +184,8 @@ architecture guidance:
   `key` + `contentType` in lazy lists, lifecycle-aware collection, no side effects during
   composition, and `LifecycleStartEffect` for "screen started" input.
 - **Testing** (`testing-setup`): fakes over mocks, JVM tests for business logic,
-  Robolectric-backed Compose UI tests, an instrumented Room test with an in-memory database, and
-  MockWebServer for the network layer.
+  Robolectric-backed Compose UI tests, an instrumented Room test with an in-memory database,
+  MockWebServer for the network layer, and screenshot tests of every View state.
 - **Data**: offline-first. The selected city is read from Room/DataStore, the network only
   writes, all suspend functions are main-safe, and failures are mapped to a small `FailureReason`
   type instead of leaking Retrofit or IO exceptions.

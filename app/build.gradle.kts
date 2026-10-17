@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
     alias(libs.plugins.room)
+    alias(libs.plugins.screenshot)
 }
 
 // The weatherapi.com key is read from local.properties (git-ignored, never commit it):
@@ -75,6 +76,9 @@ android {
         // Lets Robolectric-backed Compose UI tests in src/test read app resources.
         unitTests.isIncludeAndroidResources = true
     }
+
+    // Screenshot tests: previews in src/screenshotTest, rendered on the JVM (see README).
+    experimentalProperties["android.experimental.enableScreenshotTest"] = true
 }
 
 androidComponents {
@@ -138,6 +142,10 @@ dependencies {
     testImplementation(libs.androidx.test.ext.junit)
     testImplementation(platform(libs.androidx.compose.bom))
     testImplementation(libs.androidx.compose.ui.test.junit4)
+
+    // Screenshot tests (Compose Preview Screenshot Testing)
+    screenshotTestImplementation(libs.screenshot.validation.api)
+    screenshotTestImplementation(libs.androidx.compose.ui.tooling)
     // prod-only unit tests: the Retrofit data source against a local fake HTTP server.
     "testProdImplementation"(libs.okhttp.mockwebserver)
 
