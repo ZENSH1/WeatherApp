@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- The mock flavor overrides this hint so it is obvious the data is canned. -->
+    <string name="please_search">You are on the offline mock backend. Try London, Karachi or Tokyo — or search “offline” to see the error state.</string>
+</resources>

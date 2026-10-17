@@ -1,8 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">WeatherTracking</string>
-    <string name="API_KEY">994a6621fe89429ab3034108241412</string>
-    <string name="search">Search weather</string>
-    <string name="no_city_selected">No City Selected</string>
-    <string name="please_search">Please Search For A City</string>
-    <string name="send">Send</string>
+
+    <!-- Search -->
+    <string name="search_hint">Search for a city</string>
+    <string name="search_action">Search</string>
+    <string name="clear_search">Clear search</string>
+    <string name="searching_for">Searching for “%1$s”…</string>
+    <string name="no_results">No cities match “%1$s”.</string>
+    <string name="retry">Retry</string>
+
+    <!-- Selected city -->
+    <string name="no_city_selected">No city selected</string>
+    <string name="please_search">Search for a city to see its current weather.</string>
+    <string name="refresh">Refresh</string>
+    <string name="updated_at">Updated %1$s</string>
+    <string name="refresh_failed">Couldn\'t update. Showing the last saved weather.</string>
+    <string name="humidity">Humidity</string>
+    <string name="uv_index">UV index</string>
+    <string name="feels_like">Feels like</string>
+    <string name="humidity_value">%1$d%%</string>
+    <string name="uv_value">%1$.1f</string>
+    <string name="temperature_value">%1$d°</string>
+
+    <!-- Errors -->
+    <string name="error_network">Can\'t reach the weather service. Check your connection and try again.</string>
+    <string name="error_invalid_api_key">The weather service rejected the API key. Set WEATHER_API_KEY in local.properties.</string>
+    <string name="error_unknown">The weather service sent an unexpected response.</string>
 </resources>
